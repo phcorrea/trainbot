@@ -1,0 +1,56 @@
+plugins:
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.4
+  Exclude:
+    - 'vendor/**/*'
+
+# Internal library — no public API documentation required
+Style/Documentation:
+  Enabled: false
+
+# apply_departure_filter and shift_datetime are complex by nature
+# of DST-aware date manipulation and multi-field nil-guarding.
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/bot/thetrainline/fetcher.rb'
+    - 'lib/bot/thetrainline/journey.rb'
+    - 'lib/bot/thetrainline/journey_factory.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/bot/thetrainline/fetcher.rb'
+    - 'lib/bot/thetrainline/journey.rb'
+    - 'lib/bot/thetrainline/journey_factory.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/bot/thetrainline/fetcher.rb'
+    - 'lib/bot/thetrainline/journey.rb'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/bot/thetrainline/fetcher.rb'
+
+# client_spec needs several let helpers to set up Fetcher + JourneyFactory mocks.
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - 'spec/bot/thetrainline/client_spec.rb'
+
+# client_spec describes Bot::Thetrainline module-level methods defined in client.rb;
+# the file path intentionally reflects the file under test, not the described constant.
+RSpec/SpecFilePathFormat:
+  Exclude:
+    - 'spec/bot/thetrainline/client_spec.rb'
+
+# Inline fixtures make examples long and multi-expectation by nature.
+# Splitting them would reduce readability without improving coverage.
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/**/*'
