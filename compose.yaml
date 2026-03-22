@@ -1,0 +1,46 @@
+services:
+  gem:
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    command:
+      - bundle
+      - exec
+      - ruby
+      - -Ilib
+      - -rdate
+      - -e
+      - |
+          require './lib/bot'
+          pp Bot::Thetrainline.find(
+            'Berlin Hbf',
+            "Paris Gare de l'Est",
+            DateTime.parse('2026-03-16T00:00:00+00:00')
+          )
+
+  lint:
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    command:
+      - bundle
+      - exec
+      - rubocop
+
+  test:
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    command:
+      - bundle
+      - exec
+      - rspec
+
+volumes:
+  bundle:
